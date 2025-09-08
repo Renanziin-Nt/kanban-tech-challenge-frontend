@@ -2,7 +2,7 @@
 import { useDrop } from 'react-dnd'
 import type { Card as CardType } from '@/types'
 import Card from './Card'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useToast } from '@/hooks/useToast'
 
 interface ColumnProps {
@@ -48,7 +48,8 @@ const Column = ({
   }, [cards, title, boardId])
 
   // Configurar drop zone para aceitar cards
-  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+  const dropRef = useRef<HTMLDivElement>(null)
+  const [{ isOver }, drop] = useDrop(() => ({
     accept: 'CARD',
     drop: async (item: { id: string; columnId: string; index: number }) => {
       // Se for a mesma coluna, deixa o handleCardDrop cuidar
@@ -78,8 +79,9 @@ const Column = ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
     }),
-  }), [id, cards.length, onMoveCard]) // ← USAR onMoveCard
-
+  }), [id, cards.length, onMoveCard])
+  drop(dropRef)
+  
   // Função para lidar com drop entre cards (reordenação dentro da mesma coluna)
   const handleCardDrop = async (draggedCardId: string, hoverIndex: number) => {
     try {
@@ -119,7 +121,7 @@ const Column = ({
 
   return (
     <div
-      ref={drop}
+      ref={dropRef}
       className={`w-80 bg-gray-100 rounded-lg p-4 flex flex-col transition-colors min-h-96 relative ${
         isOver ? 'bg-blue-100 ring-2 ring-blue-400 shadow-md' : ''
       } ${isMoving ? 'opacity-50' : ''}`} // ← FEEDBACK VISUAL DURANTE MOVIMENTO
@@ -186,7 +188,6 @@ const Column = ({
               boardId={boardId}
               index={index}
               onDrop={handleCardDrop}
-              disabled={isMoving} // ← PASSAR ESTADO DE LOADING
             />
           ))}
         

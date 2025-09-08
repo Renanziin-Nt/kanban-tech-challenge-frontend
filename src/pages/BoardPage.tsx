@@ -19,7 +19,6 @@ const BoardPage = () => {
     createCard,     
     moveCard,       
     moving,         
-    forceUpdateKey
   } = useBoardData(boardId || '')
   
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
@@ -55,9 +54,9 @@ const BoardPage = () => {
     )
   }
 
-  const selectedCard = selectedCardId
-    ? board.columns.flatMap(col => col.cards).find(card => card.id === selectedCardId)
-    : null
+  const selectedCard = selectedCardId 
+    ? board?.columns.flatMap(col => col.cards)
+    .find(card => card.id === selectedCardId) || null : null
 
   const handleCreateColumn = async () => {
     const title = prompt('Nome da coluna:')
@@ -148,7 +147,9 @@ const BoardPage = () => {
         card={selectedCard}
         isOpen={!!selectedCard}
         onClose={() => setSelectedCardId(null)}
-        onUpdate={updateCard}
+        onUpdate={async (cardId, data) => {
+        await updateCard(cardId, data) 
+      }}
         onDelete={deleteCard}
       />
 

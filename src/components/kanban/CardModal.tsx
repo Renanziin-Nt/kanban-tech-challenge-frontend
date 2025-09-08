@@ -1,6 +1,6 @@
 // components/kanban/CardModal.tsx
 import { useState, useEffect } from 'react'
-import type { Card as CardType } from '@/types'
+import type { Card as CardType, Priority } from '@/types'
 import RichTextEditor from './RichTextEditor'
 import { useToast } from '@/hooks/useToast'
 
@@ -15,7 +15,7 @@ interface CardModalProps {
 const CardModal = ({ card, isOpen, onClose, onUpdate, onDelete }: CardModalProps) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState('MEDIUM')
+  const [priority, setPriority] = useState<Priority>()
   const [assigneeId, setAssigneeId] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [loading, setLoading] = useState(false)
@@ -39,9 +39,9 @@ const CardModal = ({ card, isOpen, onClose, onUpdate, onDelete }: CardModalProps
       await onUpdate(card.id, {
         title,
         description,
-        priority,
+        priority ,
         assigneeId: assigneeId || undefined,
-        dueDate: dueDate ? new Date(dueDate) : undefined
+        dueDate: dueDate ? `${new Date(dueDate)}` : undefined
       })
       toast({
         title: "Card atualizado!",
@@ -131,7 +131,7 @@ const CardModal = ({ card, isOpen, onClose, onUpdate, onDelete }: CardModalProps
               </label>
               <select
                 value={priority}
-                onChange={(e) => setPriority(e.target.value)}
+                onChange={(e) => setPriority(e.target.valu)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="LOW">Baixa</option>

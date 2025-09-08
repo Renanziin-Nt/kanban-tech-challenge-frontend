@@ -1,16 +1,14 @@
 // hooks/useBoardData.ts
 import { useState, useEffect } from 'react'
-import type { Board, Column, Card } from '@/types'
+import type { Board, Card } from '@/types'
 import { boardsApi, columnsApi, cardsApi } from '@/services/api'
 import { useToast } from './useToast'
-import { produce } from 'immer'
 
 export const useBoardData = (boardId: string) => {
   const [board, setBoard] = useState<Board | null>(null)
   const [loading, setLoading] = useState(true)
   const { toast } = useToast()
   const [moving, setMoving] = useState(false)
-  const [forceUpdateKey, setForceUpdateKey] = useState(0)
   useEffect(() => {
     if (boardId) {
       fetchBoard()
@@ -314,7 +312,6 @@ const moveCard = async (cardId: string, sourceColumnId: string, targetColumnId: 
     deleteCard,
     moveCard, // ← ADICIONAR ESTA FUNÇÃO
     refetch: fetchBoard,
-    moving,
-    forceUpdateKey
+    moving
   }
 }

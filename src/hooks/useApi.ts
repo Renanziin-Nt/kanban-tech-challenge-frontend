@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useAuth } from '@clerk/clerk-react'
+
 
 import { boardsApi, columnsApi, cardsApi, usersApi, uploadsApi } from '@/services/api'
-import type { Board, Card, User, Column, Attachment } from '@/types'
-import { useToast } from './useToast'
+import type { Board,User, Attachment } from '@/types'
+
 
 
 

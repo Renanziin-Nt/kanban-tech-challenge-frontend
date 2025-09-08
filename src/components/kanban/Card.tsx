@@ -2,7 +2,6 @@
 import { useDrag, useDrop } from 'react-dnd'
 import { useRef } from 'react'
 import type { Card as CardType } from '@/types'
-import { useBoardData } from '@/hooks/useBoardData'
 
 interface CardProps {
   card: CardType
@@ -11,9 +10,8 @@ interface CardProps {
   onDrop?: (draggedCardId: string, hoverIndex: number) => void
 }
 
-const Card = ({ card, boardId, index = 0, onDrop }: CardProps) => {
+const Card = ({ card, index = 0, onDrop }: CardProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  const { board } = useBoardData(boardId)
 
   // Configurar drag
   // components/kanban/Card.tsx - APENAS AS PARTES RELEVANTES
@@ -54,9 +52,7 @@ const [, drop] = useDrop(() => ({
       draggedItem.index = index
     }
   },
-  drop: (item, monitor) => {
-    console.log('Drop realizado no card:', card.title)
-  }
+  
 }), [card.id, card.columnId, index, onDrop])
 
   drag(drop(ref))
