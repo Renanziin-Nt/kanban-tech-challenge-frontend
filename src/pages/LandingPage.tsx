@@ -47,12 +47,6 @@ const LandingPage = () => {
               </SignInButton>
             </SignedOut>
             
-            <Link 
-              to="/demo" 
-              className="btn-secondary text-lg px-8 py-4"
-            >
-              Ver Demonstração
-            </Link>
           </div>
 
           {/* Features Grid */}
